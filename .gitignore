@@ -13,5 +13,16 @@ env/
 .vscode/
 .idea/
 
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build / distribution folders
+build/
+dist/
+
+# Python packaging
+*.egg-info/
+
 # Variables de entorno secretas (Credenciales de BD)
 .env
