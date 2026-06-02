@@ -1,0 +1,17 @@
+# Entorno Virtual
+venv/
+.venv/
+env/
+
+# Archivos compilados de Python
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configuración del IDE (VS Code, PyCharm, etc.)
+.vscode/
+.idea/
+
+# Variables de entorno secretas (Credenciales de BD)
+.env
