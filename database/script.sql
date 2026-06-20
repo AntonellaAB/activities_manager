@@ -19,10 +19,10 @@ CREATE TABLE materias (
     nombre VARCHAR(100) UNIQUE NOT NULL
 );
 
--- PROFESORES MATERIAS (Tabla intermedia corregida con INTEGER)
+-- PROFESORES MATERIAS (Tabla intermedia )
 CREATE TABLE profesor_materias (
-    profesor_id INTEGER NOT NULL, -- Corregido: Ahora recibe el ID existente del profesor
-    materia_id INTEGER NOT NULL,  -- Corregido: Ahora recibe el ID existente de la materia
+    profesor_id INTEGER NOT NULL, 
+    materia_id INTEGER NOT NULL,  
     PRIMARY KEY(profesor_id, materia_id),
     FOREIGN KEY (profesor_id) REFERENCES usuarios(id_user) ON DELETE CASCADE,
     FOREIGN KEY (materia_id) REFERENCES materias(id_materias) ON DELETE CASCADE
