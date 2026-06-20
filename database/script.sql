@@ -41,4 +41,15 @@ CREATE TABLE horas_extension (
     informe TEXT,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT horas_extension_semestre_check CHECK (semestre BETWEEN 1 AND 12)
+); -- Cambiar el nombre del informe a descripcion
+
+CREATE TABLE actividades(
+    id_acti SERIAL PRIMARY KEY,
+    tipo VARCHAR(20) NOT NULL,
+    CONSTRAINT tipo_check CHECK (tipo IN ('EXTRA-MURO', 'INTRA-MURO')),
+    subtipo VARCHAR(20) NOT NULL,
+    CONSTRAINT tipo_check CHECK (tipo IN ('cat1', 'cat2', 'cat3', 'cat4', 'cat5', 'cat6', 'cat7')),
 );
+
+
+--ALTER TABLE horas_extension cambiar nombre
