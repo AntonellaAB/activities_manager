@@ -1,3 +1,6 @@
+
+from database.conection import obtener_conexion
+from utils.hashing import calcular_hashing
 from models.user import User 
 
 #import libreria para conectar a postgers - no tengo todavia
@@ -15,11 +18,30 @@ class UserDAO:
         #hacer consulta sql 
         sql = ("SELECT id_user, nombre, password_hash, rol FROM usuarios WHERE nombre = %s")
 
-        hash_guardado = #la respuesta sql
-        hash_ingresado = utils.hashing(password) #la funcion de hashing todavia no tengo
+        #pedimos la conexion 
+        conn = obtener_conexion()
+        
+        try: 
+            with conn.cursor() as cur:
+                cur.execute(sql, (nombre,))
+                registro = cur.fetchone()
 
-        usuario_valido = True
-        while usuario_valido :
-            if hash_guardado == hash_ingresado:
-                usuario_valido = False 
+                if registro:
+                    id_db, nombre_db, hash_db, rol_db = registro
+
+                    password = calcular_hashing(password)
+
+                    if password == hash_db:
+                        return User(id_user=id_db, nombre=nombre_db, rol=rol_db)
+            
+            return None
+
+        except Exception as e:
+            print(f"Error en el proceso de login: {e}")
+            return None
+        
+        finally: 
+            conn.close()
+
+
             
