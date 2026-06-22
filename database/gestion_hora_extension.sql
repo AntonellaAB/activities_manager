@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS usuarios CASCADE;
 DROP TABLE IF EXISTS materias CASCADE;
 DROP TABLE IF EXISTS profesor_materias CASCADE;
 DROP TABLE IF EXISTS horas_extension CASCADE;
-DROP TABLE IF EXISTS actividades CASCADE; -- Añadido para mantener consistencia
+DROP TABLE IF EXISTS actividades CASCADE;
 
 -- USUARIOS
 CREATE TABLE usuarios (
@@ -29,14 +29,14 @@ CREATE TABLE profesor_materias (
     FOREIGN KEY (materia_id) REFERENCES materias(id_materias) ON DELETE CASCADE
 );
 
--- ACTIVIDADES (Movida arriba para poder ser referenciada si es necesario)
+-- ACTIVIDADES 
 CREATE TABLE actividades (
     id_acti SERIAL PRIMARY KEY,
     tipo VARCHAR(20) NOT NULL,
     CONSTRAINT tipo_check CHECK (tipo IN ('EXTRA-MURO', 'INTRA-MURO')),
     subtipo VARCHAR(20) NOT NULL,
-    CONSTRAINT subtipo_check CHECK (subtipo IN ('cat1', 'cat2', 'cat3', 'cat4', 'cat5', 'cat6', 'cat7')) -- Nombre y columna corregidos
-); -- Coma final eliminada
+    CONSTRAINT subtipo_check CHECK (subtipo IN ('cat1', 'cat2', 'cat3', 'cat4', 'cat5', 'cat6', 'cat7'))
+);
 
 -- HORAS EXTENSION 
 CREATE TABLE horas_extension (
@@ -46,10 +46,10 @@ CREATE TABLE horas_extension (
     ubicacion VARCHAR(250) NOT NULL,
     materia_id INTEGER REFERENCES materias(id_materias),
     profesor_id INTEGER REFERENCES usuarios(id_user),
-    -- actividad_id INTEGER REFERENCES actividades(id_acti), <-- Sugerencia para conectar las tablas
+    actividad_id INTEGER REFERENCES actividades(id_acti),
     fecha DATE NOT NULL,
     horas INTEGER NOT NULL,
-    descripcion TEXT, -- Cambiado de "informe" a "descripcion" según tu comentario
+    descripcion TEXT,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT horas_extension_semestre_check CHECK (semestre BETWEEN 1 AND 12)
 );
