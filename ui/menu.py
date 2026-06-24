@@ -136,6 +136,6 @@ if __name__ == "__main__":
 # ==============================================================================
 # EJECUCIÓN HASTA QEUE SE INTEGRE CON EL LOGIN (ENTORNO DE DESARROLLO)
 # ------------------------------------------------------------------------------
-#Para ejecutar como módulo ejecutar en la terminal: python -m ui.main
+#Para ejecutar como módulo ejecutar en la terminal: python -m ui.menu
 #Debe estar posicionado en el PATH principal del proyecto para que funcione correctamente.
 # ==============================================================================
