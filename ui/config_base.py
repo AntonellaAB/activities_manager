@@ -17,6 +17,7 @@ FUENTE_COLOR_SECUNDARIO = "#ecbb21"   #claro #ede3c2
 BOTON_COLOR1 = "#d95d5a"  #hover #ebbab9 
 BOTON_COLOR1_HOVER = "#ebbab9"
 BOTON_COLOR2 = "#6b98a6"  #hover #abd6e4
+BOTON_COLOR2_HOVER = "#abd6e4"
 BOTON_COLOR3 = "#1800ad"  #hover #FFFFFF  
 #Entry fields .........
 ENTRY_BG = "#FFFFFF"            

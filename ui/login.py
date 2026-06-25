@@ -9,6 +9,7 @@ import config_base as cfg
 from dao.user_dao import UserDAO
 from menu import MainMenuView
 
+
 class LoginApp(cfg.PantallaBase):
     def __init__(self):
         super().__init__(titulo="Gestor de Horas de Extension - Login")
@@ -81,7 +82,7 @@ class LoginApp(cfg.PantallaBase):
             fg="#242424",
             bd=1, 
             relief="solid",
-            show="|"
+            show="*"
 
         )
         self.txt_password.place(x=40, y=230, width=320, height=35)
@@ -100,60 +101,62 @@ class LoginApp(cfg.PantallaBase):
             command=self.ejecutar_login
             
         )
-        self.btn_ingresar.place(x=40, y=300, width=100, height=40)
+        self.btn_ingresar.place(x=260, y=300, width=100, height=40)
 
         
         
         self.btn_crearUser = tk.Button(
             tarjeta_login,
-            text=("Soy nuevo"),
-            font=(cfg.FUENTE_FAMILY, 10),
-            bg=cfg.FONDO_TARJETA,
-            fg=cfg.FUENTE_COLOR_SECUNDARIO,
-            activebackground=cfg.FONDO_TARJETA, # Evita el flash gris horrible de Tkinter
+            text=("Crear cuenta"),
+            font=(cfg.FUENTE_FAMILY, 11, "bold"),
+            bg=cfg.BOTON_COLOR2,
+            fg=cfg.FUENTE_COLOR,
+            activebackground=cfg.BOTON_COLOR2_HOVER, # Evita el flash gris horrible de Tkinter
             activeforeground=cfg.FUENTE_COLOR,
             bd=0, 
             cursor="hand2",
             command=self.ejecutar_crearUser
             
         )
-        self.btn_crearUser.place(x=40, y=350, width=300, height=40)
+        self.btn_crearUser.place(x=40, y=300, width=150, height=40)
 
         
 
     
     
     def ejecutar_login(self):
-        #Esta funcion se ejecuta al hacerle click al boton
         usuario_ingresado = self.txt_usuario.get().strip()
         password_ingresado = self.txt_password.get().strip()
 
-        #Comprobar campos vacíos
         if not usuario_ingresado or not password_ingresado:
             messagebox.showwarning("Campos vacíos", "Por favor, completa todos los campos para continuar")
             return
         
         try:
-            usuario_valido = self.user_dao.login(usuario_ingresado, password_ingresado)
+            # Aquí capturamos el objeto User completo devuelto por tu DAO
+            usuario_logueado = self.user_dao.login(usuario_ingresado, password_ingresado)
 
-            if usuario_valido:
-                messagebox.showinfo("Éxito!", f"Bienvenido {usuario_ingresado}")
+            if usuario_logueado is not None:
+                messagebox.showinfo("¡Éxito!", f"Bienvenido/a {usuario_logueado.nombre}")
 
-                self.destroy()
+                self.destroy() # Cerramos Login de forma limpia
 
-                app_menu = MainMenuView()
+                # Instanciamos el menú pasándole el objeto completo del usuario
+                app_menu = MainMenuView(usuario_logueado)
                 app_menu.mainloop()
             else:
                 messagebox.showerror("Error de autenticación", "Usuario o contraseña incorrectos.")
 
         except Exception as e:
-            # Por si ocurre un error de conexión con PostgreSQL/Base de datos
             messagebox.showerror("Error de Conexión", f"No se pudo conectar con la base de datos: {e}")
 
-
-
     def ejecutar_crearUser(self):
-        pass
+        self.destroy()
+
+        from crearUser import CrearUserApp
+        app_crearUser = CrearUserApp()
+        app_crearUser.mainloop()
+
 #MAINLOOP ==============================================
 if __name__ == "__main__":
     
