@@ -2,9 +2,11 @@
 import tkinter as tk
 from tkinter import ttk
 import psycopg2
+import sys
+import os 
 
 # Importamos las constantes de diseño de tu equipo
-from ui.config_base import (
+from config_base import (
     FONDO_PRINCIPAL, FONDO_TARJETA, FUENTE_FAMILY, 
     FUENTE_COLOR, FUENTE_COLOR_SECUNDARIO, 
     BOTON_COLOR1, BOTON_COLOR2
@@ -114,8 +116,9 @@ class MainMenuView(tk.Frame):
 # Este bloque levanta la app de forma aislada respetando el tamaño de config_base.
 # Se puede comentar/eliminar al integrar el proyecto definitivo en un único ejecutable.
 # ==============================================================================
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 if __name__ == "__main__":
-    from ui.config_base import PantallaBase
+    from config_base import PantallaBase
     from database.conection import obtener_conexion
     
     root = PantallaBase("Menú Principal - Desarrollo y Pruebas")

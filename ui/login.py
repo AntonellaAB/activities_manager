@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 import sys
 import os
 
@@ -6,6 +7,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config_base as cfg
 from dao.user_dao import UserDAO
+from menu import MainMenuView
 
 class LoginApp(cfg.PantallaBase):
     def __init__(self):
@@ -43,7 +45,8 @@ class LoginApp(cfg.PantallaBase):
             tarjeta_login,
             text=("Nombre de Usuario"),
             font=(cfg.FUENTE_FAMILY, 14),
-            fg=cfg.FUENTE_COLOR_SECUNDARIO
+            fg=cfg.FUENTE_COLOR_SECUNDARIO,
+            bg=cfg.FONDO_TARJETA
 
         )
         lbl_usuario.place(x=40, y=110)
@@ -52,7 +55,7 @@ class LoginApp(cfg.PantallaBase):
             tarjeta_login,
             font=(cfg.FUENTE_FAMILY, 12),
             bg=cfg.ENTRY_BG,
-            fg=cfg.FUENTE_COLOR,
+            fg="#242424",
             bd=1, 
             relief="solid"
 
@@ -64,46 +67,97 @@ class LoginApp(cfg.PantallaBase):
             tarjeta_login,
             text=("Contraseña"),
             font=(cfg.FUENTE_FAMILY, 14),
-            fg=cfg.FUENTE_COLOR_SECUNDARIO
+            fg=cfg.FUENTE_COLOR_SECUNDARIO,
+            bg=cfg.FONDO_TARJETA
 
         )
         lbl_password.place(x=40, y=200)
-'''
-    def ejecutar_login():
-        usuario = self.txt_usuario.get()
-        print(f"Intentando login con el usuario desde el DAO: {usuario}")
-'''
+
+
+        self.txt_password = tk.Entry(
+            tarjeta_login,
+            font=(cfg.FUENTE_FAMILY, 12),
+            bg=cfg.ENTRY_BG,
+            fg="#242424",
+            bd=1, 
+            relief="solid",
+            show="|"
+
+        )
+        self.txt_password.place(x=40, y=230, width=320, height=35)
+
+
+        self.btn_ingresar = tk.Button(
+            tarjeta_login,
+            text=("Ingresar"),
+            font=(cfg.FUENTE_FAMILY, 11, "bold"),
+            bg=cfg.BOTON_COLOR1,
+            fg=cfg.FUENTE_COLOR,
+            activebackground=cfg.BOTON_COLOR1_HOVER, # Evita el flash gris horrible de Tkinter
+            activeforeground=cfg.FUENTE_COLOR,
+            bd=0, 
+            cursor="hand2",
+            command=self.ejecutar_login
+            
+        )
+        self.btn_ingresar.place(x=40, y=300, width=100, height=40)
+
+        
+        
+        self.btn_crearUser = tk.Button(
+            tarjeta_login,
+            text=("Soy nuevo"),
+            font=(cfg.FUENTE_FAMILY, 10),
+            bg=cfg.FONDO_TARJETA,
+            fg=cfg.FUENTE_COLOR_SECUNDARIO,
+            activebackground=cfg.FONDO_TARJETA, # Evita el flash gris horrible de Tkinter
+            activeforeground=cfg.FUENTE_COLOR,
+            bd=0, 
+            cursor="hand2",
+            command=self.ejecutar_crearUser
+            
+        )
+        self.btn_crearUser.place(x=40, y=350, width=300, height=40)
+
+        
+
+    
+    
+    def ejecutar_login(self):
+        #Esta funcion se ejecuta al hacerle click al boton
+        usuario_ingresado = self.txt_usuario.get().strip()
+        password_ingresado = self.txt_password.get().strip()
+
+        #Comprobar campos vacíos
+        if not usuario_ingresado or not password_ingresado:
+            messagebox.showwarning("Campos vacíos", "Por favor, completa todos los campos para continuar")
+            return
+        
+        try:
+            usuario_valido = self.user_dao.login(usuario_ingresado, password_ingresado)
+
+            if usuario_valido:
+                messagebox.showinfo("Éxito!", f"Bienvenido {usuario_ingresado}")
+
+                self.destroy()
+
+                app_menu = MainMenuView()
+                app_menu.mainloop()
+            else:
+                messagebox.showerror("Error de autenticación", "Usuario o contraseña incorrectos.")
+
+        except Exception as e:
+            # Por si ocurre un error de conexión con PostgreSQL/Base de datos
+            messagebox.showerror("Error de Conexión", f"No se pudo conectar con la base de datos: {e}")
+
+
+
+    def ejecutar_crearUser(self):
+        pass
 #MAINLOOP ==============================================
 if __name__ == "__main__":
+    
     app = LoginApp()
     app.mainloop()
 
 
-
-'''
-
-
-        # 3. BOTÓN PRIMARIO (Acción Importante)
-        btn_ingresar = tk.Button(
-            tarjeta_login, 
-            text="INGRESAR", 
-            font=(cfg.FUENTE_FAMILY, 11, "bold"), 
-            bg=cfg.BTN_PRIMARIO_BG, 
-            fg=cfg.BTN_PRIMARIO_FG,
-            activebackground=cfg.BTN_PRIMARIO_BG, # Evita el flash gris horrible de Tkinter
-            activeforeground=cfg.BTN_PRIMARIO_FG,
-            bd=0, 
-            cursor="hand2",
-            command=self.ejecutar_login  # Llama a la lógica
-        )
-        btn_ingresar.place(x=40, y=230, width=320, height=40)
-
-    def ejecutar_login(self):
-        usuario = self.txt_usuario.get()
-        # Aquí ya puedes usar tu DAO libremente en grupo:
-        # resultado = self.user_dao.validar_usuario(usuario, ...)
-        print(f"Intentando login con el usuario desde el DAO: {usuario}")
-
-
-
-        '''
