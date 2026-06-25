@@ -83,7 +83,7 @@ class MainMenuView(tk.Frame):
         # Puedes modificar el "35 HORAS" por lo que quieras.
         # CUANDO QUIERAS LEER LOS DATOS REALES DE TU POSTGRESQL, COMENTA LAS DOS LÍNEAS DE ABAJO.
         # ==============================================================================
-        self.lbl_hours_amount.config(text="35 HORAS")
+        self.lbl_hours_amount.config(text="45 HORAS")
         return
         
         # ==============================================================================
