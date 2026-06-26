@@ -23,19 +23,32 @@ class MainMenuView(cfg.PantallaBase):
 
     def crear_interfaz(self):
         # Contenedor principal para empaquetar con márgenes limpios
-        contenedor = tk.Frame(self, bg=cfg.FONDO_PRINCIPAL)
+        contenedor = tk.Frame(
+            self, 
+            bg=cfg.FONDO_PRINCIPAL
+        )
         contenedor.pack(fill=tk.BOTH, expand=True, padx=60, pady=60)
         
         # --- FRAME SUPERIOR (Horas y botón ADD) ---
-        top_frame = tk.Frame(contenedor, bg=cfg.FONDO_PRINCIPAL)
+        top_frame = tk.Frame(
+            contenedor, 
+            bg=cfg.FONDO_PRINCIPAL
+        )
         top_frame.pack(fill=tk.X, pady=(0, 30))
 
         # Tarjeta "TIENES : X HORAS"
-        hours_frame = tk.Frame(top_frame, bg=cfg.FONDO_TARJETA, bd=0, padx=30, pady=30)
+        hours_frame = tk.Frame(
+            top_frame, 
+            bg=cfg.FONDO_TARJETA, 
+            bd=0, 
+            padx=30, 
+            pady=30
+        )
         hours_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 20))
         
         lbl_hours_title = tk.Label(
-            hours_frame, text=f"ALUMNO: {self.usuario.nombre.upper()} | TIENES :", 
+            hours_frame, 
+            text=f"ALUMNO: {self.usuario.nombre.upper()} | TIENES :", 
             font=(cfg.FUENTE_FAMILY, 12, "bold"), 
             bg=cfg.FONDO_TARJETA, 
             fg=cfg.FUENTE_COLOR_SECUNDARIO
@@ -68,19 +81,24 @@ class MainMenuView(cfg.PantallaBase):
         btn_add.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(20, 0))
 
         # --- FRAME INFERIOR (Botón RESUMEN) ---
-        bottom_frame = tk.Frame(contenedor, bg=cfg.FONDO_PRINCIPAL)
+        bottom_frame = tk.Frame(
+            contenedor, 
+            bg=cfg.FONDO_PRINCIPAL
+        )
         bottom_frame.pack(fill=tk.X)
 
         # Botón de "RESUMEN" (Para Gio)
         btn_summary = tk.Button(
-            bottom_frame, text="RESUMEN", 
+            bottom_frame, 
+            text="RESUMEN", 
             font=(cfg.FUENTE_FAMILY, 16, "bold"), 
             bg=cfg.BOTON_COLOR2, 
             fg=cfg.FUENTE_COLOR,
             activebackground=cfg.BOTON_COLOR2, 
             activeforeground=cfg.FUENTE_COLOR,
             command=self.open_summary_ui, 
-            height=3, cursor="hand2", relief="flat"
+            height=3, cursor="hand2", 
+            relief="flat"
         )
         btn_summary.pack(fill=tk.X, expand=True)
 
