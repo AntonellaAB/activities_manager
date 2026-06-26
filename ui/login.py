@@ -94,7 +94,7 @@ class LoginApp(cfg.PantallaBase):
             font=(cfg.FUENTE_FAMILY, 11, "bold"),
             bg=cfg.BOTON_COLOR1,
             fg=cfg.FUENTE_COLOR,
-            activebackground=cfg.BOTON_COLOR1_HOVER, # Evita el flash gris horrible de Tkinter
+            activebackground=cfg.BOTON_COLOR1_HOVER,
             activeforeground=cfg.FUENTE_COLOR,
             bd=0, 
             cursor="hand2",
@@ -111,7 +111,7 @@ class LoginApp(cfg.PantallaBase):
             font=(cfg.FUENTE_FAMILY, 11, "bold"),
             bg=cfg.BOTON_COLOR2,
             fg=cfg.FUENTE_COLOR,
-            activebackground=cfg.BOTON_COLOR2_HOVER, # Evita el flash gris horrible de Tkinter
+            activebackground=cfg.BOTON_COLOR2_HOVER, 
             activeforeground=cfg.FUENTE_COLOR,
             bd=0, 
             cursor="hand2",
@@ -133,15 +133,15 @@ class LoginApp(cfg.PantallaBase):
             return
         
         try:
-            # Aquí capturamos el objeto User completo devuelto por tu DAO
+            
             usuario_logueado = self.user_dao.login(usuario_ingresado, password_ingresado)
 
             if usuario_logueado is not None:
                 messagebox.showinfo("¡Éxito!", f"Bienvenido/a {usuario_logueado.nombre}")
 
-                self.destroy() # Cerramos Login de forma limpia
+                self.destroy() 
 
-                # Instanciamos el menú pasándole el objeto completo del usuario
+                
                 app_menu = MainMenuView(usuario_logueado)
                 app_menu.mainloop()
             else:

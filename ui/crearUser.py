@@ -3,9 +3,9 @@ from tkinter import messagebox
 import sys
 import os
 
-# Asegura que Python encuentre los paquetes desde la raíz
+# Asegura que Python encuentre los paquetes desde la raIz
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from ui import config_base as cfg  # Corregido para que no crashee desde main.py
+from ui import config_base as cfg  
 from dao.user_dao import UserDAO
 
 class CrearUserApp(cfg.PantallaBase):
@@ -75,7 +75,7 @@ class CrearUserApp(cfg.PantallaBase):
         )
         self.txt_email.place(x=50, y=230, width=250, height=35)
 
-        # CONTRASENIA
+        # PASSWORD
         lbl_password = tk.Label(
             tarjeta_crear,
             text="Contraseña",
@@ -96,7 +96,7 @@ class CrearUserApp(cfg.PantallaBase):
         )
         self.txt_password.place(x=390, y=140, width=250, height=35)
 
-        # CONFIRMAR CONTRASENIA
+        # CONFIRMAR PASSWORD
         lbl_RETYPEpassword = tk.Label(
             tarjeta_crear,
             text="Confirmar contraseña",
@@ -153,22 +153,22 @@ class CrearUserApp(cfg.PantallaBase):
         password = self.txt_password.get().strip()
         confirm_password = self.txt_RETYPEpassword.get().strip()
 
-        # 1. Validar campos vacíos
+        # Validar campos vacios
         if not usuario or not email or not password or not confirm_password:
             messagebox.showwarning("Campos vacíos", "Por favor rellena todos los datos del formulario.")
             return
 
-        # 2. Validar que las contraseñas coincidan
+        # Validar que las password coincidan
         if password != confirm_password:
             messagebox.showerror("Error de coincidencia", "Las contraseñas ingresadas no coinciden.")
             return
 
-        # 3. Guardar en la Base de Datos usando el DAO
+        # Guardar en la bd
         try:
             exito = UserDAO.crear_usuario(usuario, email, password, rol='estudiante')
             if exito:
                 messagebox.showinfo("¡Éxito!", f"Cuenta para el usuario '{usuario}' creada de forma correcta.")
-                self.ejecutar_volver()  # Nos manda de vuelta al login limpito
+                self.ejecutar_volver()  
             else:
                 messagebox.showerror("Error de duplicado", f"El nombre de usuario '{usuario}' ya está en uso.")
         except Exception as e:

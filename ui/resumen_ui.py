@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from dao.extension_dao import HorasExtensionDAO
+import os 
+from pathlib import Path
 
 class ResumenUI:
     def __init__(self, root, usuario):
@@ -34,7 +36,14 @@ class ResumenUI:
         btn_frame = tk.Frame(self.root)
         btn_frame.pack(pady=15)
         
-        btn_informe = tk.Button(btn_frame, text="Generar Informe (.TXT)", font=("Arial", 11, "bold"), bg="#28a745", fg="white", padx=15, pady=5, command=self.generar_informe_txt)
+        btn_informe = tk.Button(
+            btn_frame, 
+            text="Generar Informe (.TXT)", 
+            font=("Arial", 11, "bold"), 
+            bg="#28a745", 
+            fg="white", 
+            padx=15, pady=5, 
+            command=self.generar_informe_txt)
         btn_informe.pack()
         
         self.cargar_datos()
@@ -54,7 +63,16 @@ class ResumenUI:
             messagebox.showwarning("Sin datos", "No tienes actividades registradas para reportar.")
             return
             
+            
         nombre_archivo = f"Informe_Horas_{self.usuario.nombre.replace(' ', '_')}.txt"
+        
+        '''
+        ruta_descargas = Path(os.path.expanduser("~")) / "Downloads"
+        nombre_archivo = f"Informe_Horas_{self.usuario.nombre.replace(' ', '_')}.txt"
+        ruta_final = ruta_descargas / nombre_archivo
+        '''
+
+
         
         try:
             with open(nombre_archivo, "w", encoding="utf-8") as f:
@@ -76,7 +94,7 @@ class ResumenUI:
                     ubi_str = fila[2][:18]
                     mat_str = (fila[3] if fila[3] else "N/A")[:18]
                     f.write(f"{fecha_str:<12} | {sem_str:<4} | {horas_str:<5} | {ubi_str:<20} | {mat_str:<20}\n")
-                    if fila[6]: # Si tiene descripción/informe de detalles
+                    if fila[6]: 
                         f.write(f"   -> Detalle: {fila[6]}\n")
                 
                 f.write("\n=========================================================\n")

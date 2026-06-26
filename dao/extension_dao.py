@@ -61,7 +61,7 @@ class HorasExtensionDAO:
 
     @classmethod
     def obtener_resumen_alumno(cls, alumno_id):
-        """Devuelve todas las actividades registradas por un estudiante específico"""
+       
         sql = """
             SELECT h.fecha, h.semestre, h.ubicacion, m.nombre, u.nombre, h.horas, h.informe
             FROM horas_extension h

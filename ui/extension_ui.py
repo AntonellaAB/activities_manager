@@ -6,7 +6,7 @@ from dao.materias_dao import SubjectDAO
 from models.horas_extension import HorasExtension
 from database.conection import obtener_conexion
 
-# Diccionario de Reglas de Negocio de la Universidad Americana
+# Reglas de las horas de extension UA - diccionario
 REGLAS_ACTIVIDADES = {
     'INTRA-MURO': {
         'Charlas, Webinars, Conferencias, Visitas (cat1)': {'subtipo': 'cat1', 'horas': 1},
@@ -28,13 +28,12 @@ class HorasExtensionUI:
         self.callback_actualizar = callback_actualizar
         
         self.root.title("Registro de Horas de Extensión")
-        # Se incrementa un poco el alto para dar espacio a los nuevos comboboxes
-        self.root.geometry("480x680")
+        self.root.geometry("480x580")
         self.root.resizable(False, False)
         
         self.materias_dict = {}
         self.profesores_dict = {}
-        self.horas_calculadas = 0  # Guardará las horas automáticas segun seleccion
+        self.horas_calculadas = 0  
 
         self.cargar_datos_desde_bd()
         self.crear_componentes()
@@ -55,54 +54,54 @@ class HorasExtensionUI:
         titulo = ttk.Label(main_frame, text="Registrar Horas de Extensión", font=("Arial", 16, "bold"))
         titulo.grid(row=0, column=0, columnspan=2, pady=(0, 20))
 
-        # 1. Semestre
+        # Semestre
         ttk.Label(main_frame, text="Semestre:").grid(row=1, column=0, sticky=tk.W, pady=6)
         self.spin_semestre = ttk.Spinbox(main_frame, from_=1, to=12, width=10, state="readonly")
         self.spin_semestre.set(1)
         self.spin_semestre.grid(row=1, column=1, sticky=tk.W, pady=6)
 
-        # 2. Fecha
+        # Fecha
         ttk.Label(main_frame, text="Fecha:").grid(row=2, column=0, sticky=tk.W, pady=6)
         self.entry_fecha = DateEntry(main_frame, width=17, date_pattern='yyyy-mm-dd')
         self.entry_fecha.grid(row=2, column=1, sticky=tk.W, pady=6)
 
-        # 3. Ubicación
+        # Ubicación
         ttk.Label(main_frame, text="Ubicación / Lugar:").grid(row=3, column=0, sticky=tk.W, pady=6)
         self.entry_ubicacion = ttk.Entry(main_frame, width=32)
         self.entry_ubicacion.grid(row=3, column=1, sticky=tk.W, pady=6)
 
-        # 4. Materia Asociada
+        # Materia Asociada
         ttk.Label(main_frame, text="Materia asociada:").grid(row=4, column=0, sticky=tk.W, pady=6)
         self.combo_materia = ttk.Combobox(main_frame, values=list(self.materias_dict.keys()), state="readonly", width=30)
         self.combo_materia.grid(row=4, column=1, sticky=tk.W, pady=6)
 
-        # 5. Profesor Tutor
+        # Profesor Tutor
         ttk.Label(main_frame, text="Profesor tutor:").grid(row=5, column=0, sticky=tk.W, pady=6)
         self.combo_profesor = ttk.Combobox(main_frame, values=list(self.profesores_dict.keys()), state="readonly", width=30)
         self.combo_profesor.grid(row=5, column=1, sticky=tk.W, pady=6)
 
-        # --- NUEVOS COMPONENTES CONTROLADOS AUTOMÁTICAMENTE ---
+        
 
-        # 6. Tipo de Actividad (Intra / Extra)
+        # Tipo de Actividad (Intra / Extra)
         ttk.Label(main_frame, text="Tipo Actividad:").grid(row=6, column=0, sticky=tk.W, pady=6)
         self.combo_tipo = ttk.Combobox(main_frame, values=list(REGLAS_ACTIVIDADES.keys()), state="readonly", width=30)
         self.combo_tipo.grid(row=6, column=1, sticky=tk.W, pady=6)
         self.combo_tipo.bind("<<ComboboxSelected>>", self.actualizar_subtipos)
 
-        # 7. Subtipo / Categoría Específica
+        # Subtipo / Categoria especifica
         ttk.Label(main_frame, text="Categoría:").grid(row=7, column=0, sticky=tk.W, pady=6)
         self.combo_subtipo = ttk.Combobox(main_frame, state="readonly", width=30)
         self.combo_subtipo.grid(row=7, column=1, sticky=tk.W, pady=6)
         self.combo_subtipo.bind("<<ComboboxSelected>>", self.calcular_horas_automaticas)
 
-        # 8. Visualización de Horas Asignadas (Reemplaza a tu entry_horas manual)
+        # ver de horas Asignadas (
         ttk.Label(main_frame, text="Horas a Computar:").grid(row=8, column=0, sticky=tk.W, pady=6)
         self.lbl_visualizar_horas = ttk.Label(main_frame, text="0 horas", font=("Arial", 11, "bold"), foreground="green")
         self.lbl_visualizar_horas.grid(row=8, column=1, sticky=tk.W, pady=6)
 
         # ------------------------------------------------------
 
-        # 9. Descripción / Informe (Ajustado el número de fila en el Grid)
+        #  Descripcion 
         ttk.Label(main_frame, text="Descripción:").grid(row=9, column=0, sticky=tk.NW, pady=6)
         self.txt_descripcion = tk.Text(main_frame, width=30, height=4, font=("Arial", 10))
         self.txt_descripcion.grid(row=9, column=1, sticky=tk.W, pady=6)
@@ -146,26 +145,25 @@ class HorasExtensionUI:
             messagebox.showwarning("Selección faltante", "Por favor selecciona Materia y Profesor.")
             return
 
-        # Validaciones de la nueva lógica automatizada
+        # 
         if not tipo or not subtipo_texto:
             messagebox.showwarning("Selección faltante", "Por favor define el Tipo y Categoría de la actividad.")
             return
 
-        # --- CONTROL DE LIMITES Y TOPES DEL ALUMNO (Antes de insertar) ---
+        # ====================TOPES DEL ALUMNO =============================================
         try:
             subtipo_db = REGLAS_ACTIVIDADES[tipo][subtipo_texto]['subtipo']
             
-            # 1. Consultar cuántas horas tiene acumuladas actualmente
-            # Nota: Usamos métodos estáticos del DAO tal como está estructurado tu proyecto
+            
             horas_actuales_subtipo = HorasExtensionDAO.obtener_horas_por_subtipo(self.alumno_id, subtipo_db)
             horas_actuales_tipo = HorasExtensionDAO.obtener_horas_por_tipo(self.alumno_id, tipo)
 
-            # Validar Tope Consolidado General (20 Intra-muro / 30 Extra-muro)
+            # Validar Tope  = 20 Intra-muro / 30 Extra-muro
             tope_global_tipo = 20 if tipo == 'INTRA-MURO' else 30
             if horas_actuales_tipo + self.horas_calculadas > tope_global_tipo:
                 messagebox.showerror(
                     "Tope Consolidado Alcanzado", 
-                    f"No se puede registrar.\nSuperarías el límite máximo consolidado de {迫global_tipo} horas para actividades {tipo}."
+                    f"No se puede registrar.\nSuperarías el límite máximo consolidado de {tope_global_tipo} horas para actividades {tipo}."
                 )
                 return
 
@@ -178,16 +176,17 @@ class HorasExtensionUI:
                 return
 
         except AttributeError:
-            # Por si aún no definiste las consultas de topes en tu DAO, dejamos que pase el flujo limpio.
+            
             pass
 
-        # Obtenemos los IDs mapeados desde tu base de datos actuales
+        
         materia_id = self.materias_dict[self.combo_materia.get()]
         profesor_id = self.profesores_dict[self.combo_profesor.get()]
         semestre = int(self.spin_semestre.get())
 
-        # Mapeamos la información directo al Modelo HorasExtension original que ya usabas
-        # Se inyecta la hora autocalculada de forma segura
+        
+
+        
         nueva_solicitud = HorasExtension(
             alumno_id=self.alumno_id, 
             semestre=semestre, 

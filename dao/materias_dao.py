@@ -1,4 +1,4 @@
-# Archivo: dao/materias_dao.py
+
 import psycopg2
 from models.materias import Subject
 

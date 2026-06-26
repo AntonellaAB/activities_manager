@@ -3,7 +3,7 @@ from database.conection import obtener_conexion
 class MenuDAO:
     @classmethod
     def obtener_total_horas(cls, user_id):
-        """Consulta la base de datos y suma las horas de extensión de un usuario."""
+        
         sql = "SELECT COALESCE(SUM(horas), 0) FROM horas_extension WHERE alumno_id = %s;"
         conn = obtener_conexion()
         try:
