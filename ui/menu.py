@@ -37,14 +37,17 @@ class MainMenuView(cfg.PantallaBase):
         lbl_hours_title = tk.Label(
             hours_frame, text=f"ALUMNO: {self.usuario.nombre.upper()} | TIENES :", 
             font=(cfg.FUENTE_FAMILY, 12, "bold"), 
-            bg=cfg.FONDO_TARJETA, fg=cfg.FUENTE_COLOR_SECUNDARIO
+            bg=cfg.FONDO_TARJETA, 
+            fg=cfg.FUENTE_COLOR_SECUNDARIO
         )
         lbl_hours_title.pack(anchor="w")
         
         self.lbl_hours_amount = tk.Label(
-            hours_frame, text="... HORAS", 
+            hours_frame, 
+            text="... HORAS", 
             font=(cfg.FUENTE_FAMILY, 24, "bold"), 
-            bg=cfg.FONDO_TARJETA, fg=cfg.FUENTE_COLOR
+            bg=cfg.FONDO_TARJETA, 
+            fg=cfg.FUENTE_COLOR
         )
         self.lbl_hours_amount.pack(anchor="w", pady=(10, 0))
 
@@ -52,10 +55,15 @@ class MainMenuView(cfg.PantallaBase):
         btn_add = tk.Button(
             top_frame, text="ADD", 
             font=(cfg.FUENTE_FAMILY, 16, "bold"), 
-            bg=cfg.BOTON_COLOR1, fg=cfg.FUENTE_COLOR,
-            activebackground=cfg.BOTON_COLOR1, activeforeground=cfg.FUENTE_COLOR,
+            bg=cfg.BOTON_COLOR1, 
+            fg=cfg.FUENTE_COLOR,
+            activebackground=cfg.BOTON_COLOR1, 
+            activeforeground=cfg.FUENTE_COLOR,
             command=self.open_load_hours_ui, 
-            height=3, width=15, cursor="hand2", relief="flat"
+            height=3, 
+            width=15, 
+            cursor="hand2", 
+            relief="flat"
         )
         btn_add.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(20, 0))
 
@@ -67,8 +75,10 @@ class MainMenuView(cfg.PantallaBase):
         btn_summary = tk.Button(
             bottom_frame, text="RESUMEN", 
             font=(cfg.FUENTE_FAMILY, 16, "bold"), 
-            bg=cfg.BOTON_COLOR2, fg=cfg.FUENTE_COLOR,
-            activebackground=cfg.BOTON_COLOR2, activeforeground=cfg.FUENTE_COLOR,
+            bg=cfg.BOTON_COLOR2, 
+            fg=cfg.FUENTE_COLOR,
+            activebackground=cfg.BOTON_COLOR2, 
+            activeforeground=cfg.FUENTE_COLOR,
             command=self.open_summary_ui, 
             height=3, cursor="hand2", relief="flat"
         )
