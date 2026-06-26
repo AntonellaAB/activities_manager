@@ -3,13 +3,12 @@ import psycopg2
 from models.materias import Subject
 
 class SubjectDAO:
-    
     @classmethod
     def get_all(cls, connection):
-        """Devuelve una lista con todas las materias/carreras disponibles."""
         subjects = []
         try:
             with connection.cursor() as cursor:
+                # Usamos id_materias
                 cursor.execute("SELECT id_materias, nombre FROM materias ORDER BY nombre ASC;")
                 records = cursor.fetchall()
                 for record in records:
@@ -20,9 +19,9 @@ class SubjectDAO:
 
     @classmethod
     def insert(cls, connection, subject: Subject):
-        """Inserta una nueva materia/carrera en la base de datos."""
         try:
             with connection.cursor() as cursor:
+                # Retornamos id_materias
                 sql = "INSERT INTO materias (nombre) VALUES (%s) RETURNING id_materias;"
                 cursor.execute(sql, (subject.name,))
                 generated_id = cursor.fetchone()[0]
@@ -36,9 +35,9 @@ class SubjectDAO:
 
     @classmethod
     def get_by_id(cls, connection, subject_id):
-        """Busca una materia específica por su ID."""
         try:
             with connection.cursor() as cursor:
+                # Buscamos por id_materias
                 sql = "SELECT id_materias, nombre FROM materias WHERE id_materias = %s;"
                 cursor.execute(sql, (subject_id,))
                 record = cursor.fetchone()

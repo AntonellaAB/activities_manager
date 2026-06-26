@@ -5,9 +5,9 @@ import os
 
 # Asegura que Python encuentre la carpeta 'dao' desde la carpeta 'ui'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import config_base as cfg
+from ui import config_base as cfg
 from dao.user_dao import UserDAO
-from menu import MainMenuView
+from ui.menu import MainMenuView
 
 
 class LoginApp(cfg.PantallaBase):
@@ -153,7 +153,7 @@ class LoginApp(cfg.PantallaBase):
     def ejecutar_crearUser(self):
         self.destroy()
 
-        from crearUser import CrearUserApp
+        from ui.crearUser import CrearUserApp
         app_crearUser = CrearUserApp()
         app_crearUser.mainloop()
 

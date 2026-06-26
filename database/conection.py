@@ -4,7 +4,7 @@ import psycopg2
 # Configuración de los parámetros de conexión
 DB_HOST = "localhost"         
 DB_NAME = "gestor_horas_extension" 
-DB_USER = "horas_ext_user"          
+DB_USER = "ext_user"          
 DB_PASSWORD = "password"   
 DB_PORT = "5432"              
 
