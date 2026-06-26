@@ -2,12 +2,11 @@ import psycopg2
 
 def obtener_conexion():
     try:
-        # Se eliminaron tildes y la letra n especial para evitar errores de codificacion
         conexion = psycopg2.connect(
             host="localhost",
-            database="gestion_hora_extension_prueba",
+            database="gestion_hora_extension_prueba", #cambien por el nombre de su base de datos local
             user="postgres",
-            password="Tyopt203",
+            password="Tyopt203", #cambien por su contraseña
             port="5432"
         )
 
